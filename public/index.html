@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KushalWear API</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            min-height: 100vh;
+        }
+        .container {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 30px;
+            border-radius: 15px;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+        }
+        h1 {
+            text-align: center;
+            margin-bottom: 30px;
+            font-size: 2.5em;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+        }
+        .status {
+            background: rgba(255, 255, 255, 0.2);
+            padding: 20px;
+            border-radius: 10px;
+            margin: 20px 0;
+        }
+        .endpoint {
+            background: rgba(0, 0, 0, 0.2);
+            padding: 15px;
+            border-radius: 8px;
+            margin: 10px 0;
+            font-family: 'Courier New', monospace;
+        }
+        .endpoint strong {
+            color: #ffd700;
+        }
+        .test-btn {
+            background: #4CAF50;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin: 5px;
+            transition: background 0.3s;
+        }
+        .test-btn:hover {
+            background: #45a049;
+        }
+        .result {
+            background: rgba(0, 0, 0, 0.3);
+            padding: 15px;
+            border-radius: 8px;
+            margin: 10px 0;
+            white-space: pre-wrap;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9em;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🛍️ KushalWear API</h1>
+        
+        <div class="status">
+            <h2>🚀 Serverless API Status</h2>
+            <p>This API is deployed on Netlify Functions and provides endpoints for the KushalWear clothing website.</p>
+        </div>
+
+        <div class="status">
+            <h2>📡 Available Endpoints</h2>
+            
+            <div class="endpoint">
+                <strong>Health Check:</strong> <span id="health-url">Loading...</span>
+                <button class="test-btn" onclick="testHealth()">Test Health</button>
+            </div>
+            
+            <div class="endpoint">
+                <strong>Authentication:</strong> <span id="auth-url">Loading...</span>
+                <button class="test-btn" onclick="testAuth()">Test Auth</button>
+            </div>
+            
+            <div class="endpoint">
+                <strong>Products:</strong> <span id="products-url">Loading...</span>
+                <button class="test-btn" onclick="testProducts()">Test Products</button>
+            </div>
+        </div>
+
+        <div id="results"></div>
+    </div>
+
+    <script>
+        // Set base URLs
+        const baseUrl = window.location.origin + '/.netlify/functions';
+        document.getElementById('health-url').textContent = baseUrl + '/health';
+        document.getElementById('auth-url').textContent = baseUrl + '/auth';
+        document.getElementById('products-url').textContent = baseUrl + '/products';
+
+        function showResult(title, data) {
+            const resultsDiv = document.getElementById('results');
+            const resultDiv = document.createElement('div');
+            resultDiv.className = 'result';
+            resultDiv.innerHTML = `<strong>${title}:</strong>\n${JSON.stringify(data, null, 2)}`;
+            resultsDiv.appendChild(resultDiv);
+        }
+
+        async function testHealth() {
+            try {
+                const response = await fetch(`${baseUrl}/health`);
+                const data = await response.json();
+                showResult('Health Check Response', data);
+            } catch (error) {
+                showResult('Health Check Error', { error: error.message });
+            }
+        }
+
+        async function testAuth() {
+            try {
+                const response = await fetch(`${baseUrl}/auth`);
+                const data = await response.json();
+                showResult('Auth Endpoint Response', data);
+            } catch (error) {
+                showResult('Auth Endpoint Error', { error: error.message });
+            }
+        }
+
+        async function testProducts() {
+            try {
+                const response = await fetch(`${baseUrl}/products`);
+                const data = await response.json();
+                showResult('Products Endpoint Response', data);
+            } catch (error) {
+                showResult('Products Endpoint Error', { error: error.message });
+            }
+        }
+
+        // Auto-test health on page load
+        window.addEventListener('load', testHealth);
+    </script>
+</body>
+</html> 

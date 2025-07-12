@@ -6,6 +6,8 @@
   "scripts": {
     "start": "node server.js",
     "dev": "nodemon server.js",
+    "netlify-dev": "netlify dev",
+    "build": "echo 'No build step required for Netlify Functions'",
     "setup-db": "node setup-db.js",
     "check-db": "node check-db.js",
     "reset-db": "node setup-db.js",
@@ -34,7 +36,8 @@
     "express-rate-limit": "^6.10.0"
   },
   "devDependencies": {
-    "nodemon": "^3.0.1"
+    "nodemon": "^3.0.1",
+    "netlify-cli": "^17.0.0"
   },
   "engines": {
     "node": ">=14.0.0"
