@@ -5,8 +5,19 @@ const { body, validationResult } = require('express-validator');
 const User = require('../../src/models/User');
 
 // MongoDB Connection
-const MONGODB_URI = process.env.MONGODB_URI || 'mongodb://localhost:27017/kushalwear';
-const JWT_SECRET = process.env.JWT_SECRET || 'your-secret-key';
+const MONGODB_URI = process.env.MONGODB_URI;
+const JWT_SECRET = process.env.JWT_SECRET;
+
+// Validate required environment variables
+if (!MONGODB_URI) {
+  console.error('MONGODB_URI environment variable is not set');
+  throw new Error('MONGODB_URI environment variable is required');
+}
+
+if (!JWT_SECRET) {
+  console.error('JWT_SECRET environment variable is not set');
+  throw new Error('JWT_SECRET environment variable is required');
+}
 
 exports.handler = async (event, context) => {
   // Handle CORS preflight requests

@@ -1,7 +1,13 @@
 const mongoose = require('mongoose');
 
 // MongoDB Connection
-const MONGODB_URI = process.env.MONGODB_URI || 'mongodb://localhost:27017/kushalwear';
+const MONGODB_URI = process.env.MONGODB_URI;
+
+// Validate required environment variables
+if (!MONGODB_URI) {
+  console.error('MONGODB_URI environment variable is not set');
+  throw new Error('MONGODB_URI environment variable is required');
+}
 
 exports.handler = async (event, context) => {
   // Handle CORS preflight requests
